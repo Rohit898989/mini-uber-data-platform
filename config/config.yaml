@@ -97,6 +97,25 @@ performance:
 monitoring:
   # Enable monitoring and metrics
   enabled: true
+
+api:
+  # API server settings
+  host: localhost
+  port: 5000
+  debug: false
+  
+  # API rate limiting
+  rate_limit_enabled: true
+  requests_per_hour: 1000
+  requests_per_day: 10000
+  
+  # CORS settings
+  cors_enabled: true
+  cors_origins: ["*"]
+  
+  # API documentation
+  docs_enabled: true
+  docs_path: /api/docs
   
   # Metrics collection interval (seconds)
   interval: 60
