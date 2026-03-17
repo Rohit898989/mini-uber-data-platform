@@ -1,0 +1,55 @@
+# Git ignore file for Mini Uber Data Platform
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables (actual file, not .env.example)
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Database backups
+*.sql
+backups/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Data files (optional - uncomment if you don't want to commit raw data)
+# data/raw-data/
+# data/trips_original.csv

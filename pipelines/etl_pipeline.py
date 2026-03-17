@@ -1,13 +1,48 @@
 import csv
 import logging
+import os
 from datetime import datetime
+from dotenv import load_dotenv
+import yaml
 
-# Configure logging
+# Load environment variables from .env file
+load_dotenv()
+
+# Load configuration from YAML file
+def load_config():
+    """Load configuration from config.yaml"""
+    config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.yaml')
+    with open(config_path, 'r') as f:
+        return yaml.safe_load(f)
+
+# Get configuration
+config = load_config()
+
+# Configure logging from config
 logging.basicConfig(
-    filename='logs/etl_pipeline.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    filename=config['logging']['file_path'],
+    level=getattr(logging, config['logging']['level']),
+    format=config['logging']['format']
 )
+
+# Database configuration from environment variables
+DB_CONFIG = {
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'port': int(os.getenv('DB_PORT', 3306)),
+    'user': os.getenv('DB_USER', 'root'),
+    'password': os.getenv('DB_PASSWORD', ''),
+    'database': os.getenv('DB_NAME', 'uber_data_platform')
+}
+
+# Pipeline configuration
+BATCH_SIZE = int(os.getenv('BATCH_SIZE', config['pipeline']['batch_size']))
+LOG_LEVEL = os.getenv('LOG_LEVEL', config['logging']['level'])
+ENABLE_CACHE = os.getenv('ENABLE_CACHE', 'true').lower() == 'true'
+
+# Data paths from environment or config
+DATA_INPUT_PATH = os.getenv('DATA_INPUT_PATH', config['data']['input']['path'])
+DATA_OUTPUT_PATH = os.getenv('DATA_OUTPUT_PATH', config['data']['output']['path'])
+LOG_PATH = os.getenv('LOG_PATH', config['logging']['file_path'])
 
 def extract_data(input_file):
     """Extract data from CSV file"""
@@ -48,12 +83,29 @@ def load_data(trips, output_file):
     logging.info(f"Loaded {len(trips)} records")
 
 if __name__ == "__main__":
-    input_file = "data/trips.csv"
-    output_file = "data/trips_cleaned.csv"
-    
-    trips = extract_data(input_file)
-    cleaned_trips = transform_data(trips)
-    load_data(cleaned_trips, output_file)
-    
-    logging.info("ETL pipeline completed successfully")
-    print("✅ ETL pipeline completed successfully")
+    logging.info("Starting ETL pipeline execution")
+    logging.info(f"Batch size: {BATCH_SIZE}")
+    logging.info(f"Input file: {DATA_INPUT_PATH}")
+    logging.info(f"Output file: {DATA_OUTPUT_PATH}")
+
+    try:
+        # Extract
+        trips = extract_data(DATA_INPUT_PATH)
+        logging.info(f"Successfully extracted {len(trips)} records")
+
+        # Transform
+        cleaned_trips = transform_data(trips)
+        logging.info(f"Successfully transformed {len(cleaned_trips)} records")
+
+        # Load
+        load_data(cleaned_trips, DATA_OUTPUT_PATH)
+        logging.info("ETL pipeline completed successfully")
+
+        print("ETL pipeline completed successfully")
+        print(f"Processed {len(cleaned_trips)} records")
+        print(f"Output saved to: {DATA_OUTPUT_PATH}")
+
+    except Exception as e:
+        logging.error(f"ETL pipeline failed: {str(e)}")
+        print(f"ETL pipeline failed: {str(e)}")
+        raise

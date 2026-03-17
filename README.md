@@ -170,6 +170,7 @@ mini-uber-data-platform/
 │   ├── query_guide.md               # Query documentation
 │   └── api_reference.md             # API documentation
 │
+├── test_connection.py              # Database connection test script
 ├── README.md                        # This file
 ├── requirements.txt                 # Python dependencies
 ├── setup.py                         # Package setup
@@ -277,32 +278,66 @@ python pipelines/etl_pipeline.py
 ✅ ETL pipeline completed successfully
 ```
 
-### 2. Verify Output
+### 2. Test Your Setup
 
 ```bash
-# View the cleaned data
-cat data/trips_cleaned.csv
-
-# Check the logs
-tail -f logs/etl_pipeline.log
+# Test database connection and file paths
+python test_connection.py
 ```
 
-### 3. Set Up Database
+**Expected Output (if MySQL is not running):**
+```
+🚕 Mini Uber Data Platform - Connection Test
+==================================================
+
+📁 Testing file paths...
+✅ data/trips.csv
+✅ config/config.yaml
+✅ .env
+✅ sql/schema.sql
+✅ sql/analytics.sql
+
+🔍 Testing database connection...
+❌ Database connection failed: Can't connect to MySQL server
+
+💡 Possible solutions:
+   1. Start MySQL server
+   2. Check if MySQL is installed and running
+   3. Verify host and port in .env file
+```
+
+### 3. Set Up Database (if needed)
 
 ```bash
-# Create database
+# Start MySQL server (if using XAMPP, start MySQL from control panel)
+# Then create database:
 mysql -u root -p < sql/schema.sql
+```
 
-# Load sample data
-mysql -u root -p your_database < data/trips.sql
+### 4. Run ETL Pipeline
 
-# Verify schema
-mysql -u root -p your_database -e "SHOW TABLES;"
+```bash
+python pipelines/etl_pipeline.py
 ```
 
 ---
 
 ## 📊 Usage
+
+### Testing Database Connection
+
+Before running the ETL pipeline, test your database connection:
+
+```bash
+python test_connection.py
+```
+
+This script will:
+- ✅ Verify all required files exist
+- ✅ Test database connectivity
+- ✅ Check if database tables exist
+- ✅ Test basic data operations
+- ✅ Provide helpful error messages and solutions
 
 ### Running the ETL Pipeline
 
