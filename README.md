@@ -3,6 +3,8 @@
 <div align="center">
 
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-3776ab.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![Flask](https://img.shields.io/badge/Flask-2.3+-000000.svg?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![REST API](https://img.shields.io/badge/API-REST-009688.svg?style=flat&logo=rest&logoColor=white)](https://restfulapi.net/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![SQL](https://img.shields.io/badge/SQL-MySQL%2FPostgreSQL-336791.svg?style=flat&logo=mysql&logoColor=white)](https://www.mysql.com/)
@@ -27,6 +29,7 @@
 - [Installation](#-installation)
 - [Quick Start](#-quick-start)
 - [Usage](#-usage)
+- [API Reference](#-api-reference)
 - [Database Setup](#-database-setup)
 - [Analytics Queries](#-analytics-queries)
 - [Data Schema](#-data-schema)
@@ -45,6 +48,7 @@ The **Mini Uber Data Platform** is a sophisticated, scalable data engineering so
 
 - **ETL Pipeline Design** - Robust extraction, transformation, and loading processes
 - **Data Warehousing** - Normalized schema design with optimized queries
+- **REST API Development** - Flask-based web API for data access and analytics
 - **Analytics & Reporting** - Complex SQL queries for business intelligence
 - **Error Handling & Logging** - Production-grade error management and audit trails
 - **Scalability** - Architecture ready to scale to millions of records
@@ -55,6 +59,9 @@ The **Mini Uber Data Platform** is a sophisticated, scalable data engineering so
 - 💰 Revenue optimization
 - 📍 Route and location analysis
 - 🔍 Data-driven decision making
+- 🌐 **API Integration** - Third-party applications and dashboards
+- 📱 **Mobile App Backend** - Real-time data access for mobile applications
+- 🔗 **System Integration** - Connect with other business systems
 
 ---
 
@@ -85,6 +92,14 @@ The **Mini Uber Data Platform** is a sophisticated, scalable data engineering so
 - ✅ **Caching** - Support for result caching layer
 - ✅ **Query Optimization** - Composite indexes for fast lookups
 
+### 🌐 REST API
+- ✅ **Flask-based Server** - Production-ready web framework
+- ✅ **RESTful Endpoints** - Health, trips, analytics, drivers APIs
+- ✅ **JSON Responses** - Standardized data format
+- ✅ **CORS Support** - Cross-origin resource sharing enabled
+- ✅ **Error Handling** - Graceful failure with detailed error messages
+- ✅ **Query Parameters** - Filtering, pagination, and sorting support
+
 ---
 
 ## 🏗️ Architecture
@@ -93,7 +108,7 @@ The **Mini Uber Data Platform** is a sophisticated, scalable data engineering so
 ┌─────────────────────────────────────────────────────────────┐
 │                     Data Sources (Raw)                       │
 │                    ├── trips.csv                             │
-│                    └── Database APIs                         │
+│                    └── External APIs                         │
 └────────────────────┬────────────────────────────────────────┘
                      │
                      ▼
@@ -125,13 +140,18 @@ The **Mini Uber Data Platform** is a sophisticated, scalable data engineering so
     │ ├─ Passenger Behavior       │
     │ ├─ Location Analysis        │
     │ └─ Custom Reports           │
-    └────────┬────────────────────┘
-             │
-             ▼
-    ┌─────────────────────────────┐
-    │  VISUALIZATION & BI         │
-    │  (Dashboards, Reports)      │
-    └─────────────────────────────┘
+    └────────┬─────────────┬──────┘
+             │             │
+             ▼             ▼
+    ┌─────────────────┐   ┌─────────────────────┐
+    │  REST API       │   │  VISUALIZATION & BI │
+    │  (Flask Server) │   │  (Dashboards)       │
+    ├─────────────────┤   └─────────────────────┘
+    │ ├─ Health Check │
+    │ ├─ Trip Data    │
+    │ ├─ Analytics    │
+    │ └─ Driver Stats │
+    └─────────────────┘
 ```
 
 ---
@@ -171,6 +191,8 @@ mini-uber-data-platform/
 │   └── api_reference.md             # API documentation
 │
 ├── test_connection.py              # Database connection test script
+├── test_api.py                      # API endpoint testing script
+├── api.py                           # Flask REST API server
 ├── README.md                        # This file
 ├── requirements.txt                 # Python dependencies
 ├── setup.py                         # Package setup
@@ -278,11 +300,44 @@ python pipelines/etl_pipeline.py
 ✅ ETL pipeline completed successfully
 ```
 
-### 2. Test Your Setup
+### 2. Start the API Server
+
+```bash
+# Start the Flask REST API server
+python api.py
+```
+
+**Expected Output:**
+```
+Starting Mini Uber Data Platform API Server...
+Host: 0.0.0.0
+Port: 5000
+Debug: False
+API Base URL: http://localhost:5000/api/v1
+==================================================
+```
+
+### 3. Test Your Setup
 
 ```bash
 # Test database connection and file paths
 python test_connection.py
+
+# Test API endpoints (in a separate terminal)
+python test_api.py
+```
+
+**Expected API Test Output:**
+```
+🚕 Mini Uber Data Platform API Test
+==================================================
+✅ Health endpoint working!
+✅ Trips endpoint working!
+✅ Revenue analytics endpoint working!
+✅ Top drivers endpoint working!
+
+🎉 ALL TESTS PASSED! (4/4)
+Your API is working perfectly!
 ```
 
 **Expected Output (if MySQL is not running):**
@@ -374,6 +429,190 @@ crontab -e
 $trigger = New-ScheduledTaskTrigger -Daily -At 2am
 $action = New-ScheduledTaskAction -Execute "python" -Argument "C:\path\to\etl_pipeline.py"
 Register-ScheduledTask -TaskName "UberETLPipeline" -Trigger $trigger -Action $action
+```
+
+---
+
+## 🌐 API Reference
+
+The Mini Uber Data Platform includes a complete REST API built with Flask for accessing trip data and analytics programmatically.
+
+### Starting the API Server
+
+```bash
+# Start the Flask API server
+python api.py
+```
+
+**Server will start on:** `http://localhost:5000`
+
+### API Endpoints
+
+#### `GET /api/v1/health`
+Check API and database health status.
+
+**Response:**
+```json
+{
+  "status": "healthy",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "version": "1.0.0",
+  "database": "connected"
+}
+```
+
+#### `GET /api/v1/trips`
+Retrieve trip data with optional filtering and pagination.
+
+**Query Parameters:**
+- `limit` (int): Records per page (default: 100, max: 1000)
+- `offset` (int): Pagination offset (default: 0)
+- `start_date` (string): Filter by start date (YYYY-MM-DD)
+- `end_date` (string): Filter by end date (YYYY-MM-DD)
+
+**Example:**
+```bash
+curl "http://localhost:5000/api/v1/trips?limit=5&start_date=2024-01-01"
+```
+
+**Response:**
+```json
+{
+  "data": [
+    {
+      "trip_id": 1,
+      "driver_id": 101,
+      "passenger_id": 201,
+      "pickup_location": "Manhattan",
+      "dropoff_location": "Brooklyn",
+      "distance_km": 5.2,
+      "duration_minutes": 15,
+      "fare_amount": 18.50,
+      "timestamp": "2024-01-01T08:00:00Z",
+      "driver_name": "John Smith",
+      "passenger_name": "Jane Doe"
+    }
+  ],
+  "total": 1000,
+  "limit": 5,
+  "offset": 0
+}
+```
+
+#### `GET /api/v1/analytics/revenue`
+Get revenue analytics data aggregated by time period.
+
+**Query Parameters:**
+- `period` (string): "daily", "weekly", "monthly" (default: "daily")
+- `days` (int): Number of days to look back (default: 30, max: 365)
+
+**Example:**
+```bash
+curl "http://localhost:5000/api/v1/analytics/revenue?period=weekly&days=30"
+```
+
+**Response:**
+```json
+{
+  "period": "weekly",
+  "days": 30,
+  "data": [
+    {
+      "period": "2024-W03",
+      "trips": 145,
+      "revenue": 4250.75,
+      "avg_fare": 29.32,
+      "total_distance": 890.5
+    }
+  ]
+}
+```
+
+#### `GET /api/v1/drivers/top`
+Get top-performing drivers based on specified metrics.
+
+**Query Parameters:**
+- `limit` (int): Number of drivers to return (default: 10, max: 50)
+- `metric` (string): "earnings", "trips", "rating" (default: "earnings")
+
+**Example:**
+```bash
+curl "http://localhost:5000/api/v1/drivers/top?limit=5&metric=trips"
+```
+
+**Response:**
+```json
+{
+  "metric": "trips",
+  "limit": 5,
+  "drivers": [
+    {
+      "driver_id": 101,
+      "name": "John Smith",
+      "trips": 150,
+      "earnings": 4250.00,
+      "avg_fare": 28.33,
+      "avg_distance": 12.5,
+      "efficiency_rating": 2.27
+    }
+  ]
+}
+```
+
+### Testing the API
+
+```bash
+# Test all endpoints automatically
+python test_api.py
+```
+
+**Expected Output:**
+```
+🚕 Mini Uber Data Platform API Test
+==================================================
+Testing API at: http://localhost:5000/api/v1
+✅ Health endpoint working!
+✅ Trips endpoint working!
+✅ Revenue analytics endpoint working!
+✅ Top drivers endpoint working!
+
+🎉 ALL TESTS PASSED! (4/4)
+Your API is working perfectly!
+```
+
+### API Error Responses
+
+All errors follow a consistent format:
+
+```json
+{
+  "error": "Failed to fetch trips: Database connection failed"
+}
+```
+
+**Common HTTP Status Codes:**
+- `200` - Success
+- `400` - Bad Request (invalid parameters)
+- `404` - Endpoint not found
+- `500` - Internal Server Error
+
+### API Configuration
+
+Configure the API in `config/config.yaml`:
+
+```yaml
+api:
+  host: localhost
+  port: 5000
+  debug: false
+  cors_enabled: true
+```
+
+Or override with environment variables:
+```bash
+export API_HOST=0.0.0.0
+export API_PORT=8000
+export API_DEBUG=true
 ```
 
 ---
