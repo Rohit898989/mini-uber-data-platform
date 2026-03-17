@@ -1,0 +1,4 @@
+trip_id,driver_id,passenger_id,pickup_location,dropoff_location,distance_km,duration_minutes,fare_amount,timestamp
+1,101,201,Manhattan,Brooklyn,5.2,15,18.50,2024-01-01 08:00:00
+2,102,202,Queens,Manhattan,8.1,22,25.75,2024-01-01 08:15:00
+3,103,203,Brooklyn,Manhattan,6.5,18,21.00,2024-01-01 08:30:00
