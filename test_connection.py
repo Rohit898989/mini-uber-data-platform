@@ -13,7 +13,7 @@ from pathlib import Path
 
 def load_config():
     """Load configuration from config.yaml"""
-    config_path = Path(__file__).parent.parent / 'config' / 'config.yaml'
+    config_path = Path(__file__).parent / 'config' / 'config.yaml'
     try:
         with open(config_path, 'r') as f:
             return yaml.safe_load(f)
@@ -137,10 +137,7 @@ def test_file_paths():
     print("\nTesting file paths...")
 
     # Get the project root directory (where this script is located)
-    script_dir = Path(__file__).parent
-    project_root = script_dir.parent
-
-    print(f"Project root: {project_root}")
+    project_root = Path(__file__).parent
 
     required_files = [
         'data/trips.csv',
