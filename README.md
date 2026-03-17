@@ -203,7 +203,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mini-uber-data-platform.git
+git clone https://github.com/Rohit898989/mini-uber-data-platform.git
 cd mini-uber-data-platform
 
 # Create virtual environment
@@ -671,7 +671,7 @@ We love contributions! Here's how to get started:
 ```bash
 # Fork the repository on GitHub
 # Clone your fork
-git clone https://github.com/yourusername/mini-uber-data-platform.git
+git clone https://github.com/Rohit898989/mini-uber-data-platform.git
 cd mini-uber-data-platform
 
 # Create a feature branch
@@ -741,10 +741,10 @@ copies or substantial portions of the Software.
 
 ## 👤 Author & Contact
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+**Rohit Verma**
+- GitHub: [@Rohit898989](https://github.com/Rohit898989)
+- Email: rohitverma9407@gmail.com
+- Portfolio: [GitHub Profile](https://github.com/Rohit898989)
 
 ### Acknowledgments
 
@@ -771,7 +771,7 @@ This project demonstrates:
 
 ⭐ **If you found this helpful, please consider giving it a star!** ⭐
 
-[View on GitHub](https://github.com/yourusername/mini-uber-data-platform) | [Report Bug](https://github.com/yourusername/mini-uber-data-platform/issues) | [Request Feature](https://github.com/yourusername/mini-uber-data-platform/issues)
+[View on GitHub](https://github.com/Rohit898989/mini-uber-data-platform) | [Report Bug](https://github.com/Rohit898989/mini-uber-data-platform/issues) | [Request Feature](https://github.com/Rohit898989/mini-uber-data-platform/issues)
 
 Made with ❤️ by Data Engineering Enthusiasts
 
